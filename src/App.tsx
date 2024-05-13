@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react'
 import Swap from "src/components/Swap";
 import Pool from "src/components/Pool";
 import List from "src/components/List";
+import Position from "src/components/Position";
+
 
 function App() {
   const [selectedIndex, setSelectedIndex] = useState(0);
@@ -14,6 +16,9 @@ function App() {
     }
     else if (selectedIndex === 1) {
       setDisplayComponent(<Pool />);
+    }
+    else {
+      setDisplayComponent(<Position />);
     }
   }, [selectedIndex])
 
@@ -44,6 +49,10 @@ function App() {
           name="Pools"
           active={selectedIndex === 1}
           onClick={() => setSelectedIndex(1)} />
+        <List
+          name="Position"
+          active={selectedIndex === 2}
+          onClick={() => setSelectedIndex(2)} />
       </div>
       {/* <h5 className="pb-5">Liquidity pools</h5> */}
 
@@ -51,8 +60,17 @@ function App() {
         {
           selectedIndex == 0 ?
             <h5 className="pb-5">Swap</h5>
-            :
+            : null
+        }
+        {
+          selectedIndex == 1 ?
             <h5 className="pb-5">Liquidity pools</h5>
+            : null
+        }
+        {
+          selectedIndex == 2 ?
+            <h5 className="pb-5">Position</h5>
+            : null
         }
         {
           displayComponent

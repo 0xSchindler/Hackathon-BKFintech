@@ -101,6 +101,7 @@ function ConnectedButton({ address }: { address: string }) {
                             borderRadius: '16px',
                             boxShadow: 4,
                             py: 2,
+                            zIndex: 1000
                         }}
                     >
                         <Box sx={{ display: 'flex', placeItems: 'center', px: 2, justifyContent: 'center', mb: 1 }}>

@@ -1,46 +1,85 @@
-import { useContext, useEffect, useState } from "react"
+// import { useContext } from "react"
 // import { SwapContext } from "../../contexts/Swap";
-import { Input as InputMui } from '@mui/material';
-
+import { useEffect, useState } from 'react';
+import { Input as InputMui, FormControl, FormHelperText, InputLabel, Select, MenuItem } from '@mui/material';
+import { imagePath } from 'src/constants/imagePath';
+import { useWalletContext } from 'src/contexts/wallet-context/wallet-context';
+import { BN } from 'src/utils';
+import { formatNumber } from 'src/utils/format';
+import BigNumber from 'bignumber.js';
+import { TKeyContractToken } from 'src/contexts/wallet-context/hooks/cosmos-network/connect-oraichain/contractFunction';
 
 export default function Output() {
-    const [selection, setSelection] = useState(null);
-    // const { token1, token2, setToken2, setToken2Amount, output } = useContext(SwapContext);
+    const { oraichain, assetTokens, ctrAddress } = useWalletContext();
+    const [token, setToken] = useState<TKeyContractToken | null | "ORAI">(null);
+    const [loading, setLoading] = useState(false);
+    const [balance, setBalance] = useState<BigNumber>(BN(0));
 
-    // const handleSelect = (e: any) => {
-    //     return setToken2(e.target.value);
-    // }
-    // const handleAmountChange = (e: any) => {
-    //     return setToken2Amount(e.target.value);
-    // }
-    // useEffect(() => {
-    //     const reset: any = document.getElementById("reset")?.click();
-    // }, [token2])
+    const handleChange = (event: any) => {
+        setToken(event.target.value);
+    };
+
+    const getBalance = async () => {
+        setLoading(true)
+        if (token != null) {
+            const { ctrFunction, address, baseDivident, client } = oraichain;
+            try {
+                if (token == 'ORAI') {
+                    const res = await client?.getBalance(address, 'orai');
+                    setBalance(BN(res?.amount).div(baseDivident))
+                } else {
+                    const res = await oraichain.query(ctrFunction.tokenBalance(token, address));
+                    setBalance(BN(res.data.balance).div(baseDivident))
+                }
+            } catch (err) {
+                console.error(err)
+            } finally {
+                setLoading(false)
+            }
+        }
+    }
+
+    useEffect(() => {
+        getBalance()
+    }, [token])
 
     return (
-        <div className="d-flex align-items-center" style={{ width: "100%", minHeight: "70px", backgroundColor: "#ebedf0", margin: "20px 0", padding: "10px", borderRadius: "14px", }}>
+        <div className="d-flex align-items-center" style={{ width: "100%", minHeight: "70px", backgroundColor: "#ebedf0", marginBottom: "20px", padding: "10px", borderRadius: "14px", paddingTop: '15px' }}>
             <div style={{ width: "100%" }}>
-                {/* <h6 className="mb-3">To {output ? <span style={{ fontSize: "12px", color: "#ff005d" }}>(Estimated)</span> : null}</h6> */}
-                <h6 className="mb-3">To</h6>
-                <div className="row m-0 p-0">
-                    <div className="col-9 p-0">
-                        {/* <input type="number" className="swap-input full-width" placeholder="0.0" value={output} /> */}
-                        {/* <input type="number" className="swap-input full-width" placeholder="0.0" value={0} /> */}
-                        <InputMui type="number" sx={{ width: "100%" }} />
+                <div className="row m-0">
+                    <div style={{ fontSize: '14px' }}>Balance: {loading ? "..." : formatNumber(balance)} {token}</div>
+                    <div className="col-8" style={{ alignSelf: 'flex-end', paddingBottom: '10px' }}>
+                        <InputMui type="number" sx={{ width: "100%", fontSize: '20px' }} />
                     </div>
-                    <div className="col-3" style={{ paddingLeft: '10px', paddingRight: '0px' }}>
-                        <select className="swap" style={{ width: "100%", height: '100%' }} onChange={() => { }}>
-                            {/* <option disabled={token2 ? true : false} value="" id="reset">Choose</option> */}
-                            <option disabled={false} value="" id="reset">Choose</option>
-                            <option value="LEMON">LEMON</option>
-                            <option value="KTD">KTD</option>
-                            <option value="GG">GG</option>
-                            <option value="TIG">TIG</option>
-                        </select>
+                    <div className="col-4" style={{ paddingLeft: '10px' }}>
+                        <FormControl style={{ padding: '0px' }} fullWidth sx={{ m: 1, minWidth: 100, paddingRight: '0px' }}>
+                            <Select
+                                value={token}
+                                onChange={handleChange}
+                                displayEmpty
+                                sx={{ display: 'flex', gap: 1, padding: '0px' }}
+                                inputProps={{
+                                    'aria-label': 'Without label', display: 'flex'
+                                }}
+                            >
+                                <MenuItem value={"ORAI"} sx={{ display: 'flex', gap: 1 }}>
+                                    <img src={imagePath.Orai} alt="logo orchai icon" width={22} height={22} style={{ borderRadius: '50%', background: 'white', padding: '2px' }} />
+                                    <span>Orai</span>
+                                </MenuItem>
+                                <MenuItem value={"USDT"} sx={{ display: 'flex', gap: 1 }}>
+                                    <img src={imagePath.USDT} alt="logo orchai icon" width={22} height={22} style={{ borderRadius: '50%', background: 'white', padding: '2px' }} />
+                                    <span>USDT</span>
+                                </MenuItem>
+                                <MenuItem value={'USDC'} sx={{ display: 'flex', gap: 1 }}>
+                                    <img src={imagePath.USDC} alt="logo orchai icon" width={22} height={22} style={{ borderRadius: '50%', background: 'white', padding: '2px' }} />
+                                    <span>USDC</span>
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
                     </div>
                 </div>
             </div>
+        </div>
 
-        </div >
     )
 }

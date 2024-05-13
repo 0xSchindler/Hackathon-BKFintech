@@ -38,6 +38,6 @@ export default function SwapButton() {
         //         (!token2) ? "Select token" : "Swap now"
 
         // }</Button>
-        <Button>Hello</Button>
+        <Button>Swap</Button>
     )
 }

@@ -5,7 +5,7 @@ import Logo_UnknownWallet from 'src/assets/images/wallets/UnknowWallet.png';
 import Logo_Leap from 'src/assets/images/wallets/leap-wallet-logo.png';
 import USDT from 'src/assets/images/token/USDT.png';
 import Orai from 'src/assets/images/token/Orai.png';
-
+import USDC from 'src/assets/images/token/USDC.png';
 
 export const imagePath = {
     Logo_Keplr,
@@ -13,5 +13,6 @@ export const imagePath = {
     Logo_Leap,
     Logo_UnknownWallet,
     USDT,
+    USDC,
     Orai
 }

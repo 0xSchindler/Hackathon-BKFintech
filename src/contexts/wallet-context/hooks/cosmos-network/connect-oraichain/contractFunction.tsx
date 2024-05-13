@@ -3,7 +3,7 @@ import { encodeToBase64 } from 'src/utils';
 import { TDenomNative } from '../../../types';
 
 export type TCrosschainId = 'cosmoshub-4' | 'osmosis-1';
-export type TKeyContractToken = keyof Pick<TAddressContract, 'SC_ORAI_TOKEN' | 'S_ORAI_TOKEN' | 'SC_ATOM_TOKEN' | 'ST_ATOM_TOKEN' | 'ST_OSMO_TOKEN' | 'USDT' | 'SC_OSMO_TOKEN'>;
+export type TKeyContractToken = keyof Pick<TAddressContract, 'SC_ORAI_TOKEN' | 'S_ORAI_TOKEN' | 'SC_ATOM_TOKEN' | 'ST_ATOM_TOKEN' | 'ST_OSMO_TOKEN' | 'USDT' | 'USDC' | 'SC_OSMO_TOKEN'>;
 export type TKeyContractCustody = keyof Pick<TAddressContract, 'S_ORAI_CUSTODY' | 'SC_ORAI_CUSTODY' | 'ST_ATOM_CUSTODY' | 'ST_OSMO_CUSTODY' | 'SC_ATOM_CUSTODY'>;
 export type TKeyContractReward = keyof Pick<TAddressContract, 'SC_ATOM_CUSTODY_REWARD' | 'SC_ORAI_CUSTODY_REWARD' | 'S_ORAI_CUSTODY_REWARD' | 'ORAI_STAKING_REWARD' | 'CROSSCHAIN_STAKING_REWARD'>;
 export type TKeyContractHub = keyof Pick<TAddressContract, 'ORAI_STAKING_HUB' | 'CROSSCHAIN_STAKING_HUB'>;

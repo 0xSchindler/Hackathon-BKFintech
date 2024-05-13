@@ -6,3 +6,10 @@ body {
     font-family: Poppins !important;
     background-color: #d7dce2;
 }
+
+.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input.css-11u53oe-MuiSelect-select-MuiInputBase-input-MuiOutlinedInput-input {
+    padding-block: 10px !important;
+    padding-inline: 8px !important;
+    display: flex;
+    gap: 4px
+}
